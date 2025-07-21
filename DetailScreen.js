@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 
 export default function DetailScreen({ route }) {
   const { user } = route.params;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.title}>{user.name}</Text>
       <Text>Kullanıcı Adı: {user.username}</Text>
       <Text>Email: {user.email}</Text>
@@ -16,7 +16,7 @@ export default function DetailScreen({ route }) {
       <Text>  Şehir: {user.address.city}</Text>
       <Text>  Posta Kodu: {user.address.zipcode}</Text>
       <Text>Şirket: {user.company.name}</Text>
-    </ScrollView>
+    </View>
   );
 }
 

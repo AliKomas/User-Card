@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator,Alert } from 'react-native';
 import axios from 'axios';
 
 export default function HomeScreen({ navigation }) {
@@ -9,6 +9,7 @@ export default function HomeScreen({ navigation }) {
   const [allLoaded, setAllLoaded] = useState(false);
 
   const pageSize = 5;
+
   const kullanicilar = () => {
     if (loading || allLoaded) return;
     setLoading(true);
@@ -31,16 +32,19 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     kullanicilar();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  },);
 
+  const renderFooter = () => {
+    if (!loading) return null;
+    return <ActivityIndicator size="large" style={{ margin: 10 }} />;
+  };
 
   return (
     <View style={styles.container}>
       <FlatList
         data={users}
         keyExtractor={item => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 60 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.card}
@@ -56,7 +60,8 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
         )}
         onEndReached={kullanicilar}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={0.8}
+        ListFooterComponent={renderFooter}
       />
     </View>
   );
@@ -67,13 +72,13 @@ const styles = StyleSheet.create({
     flex: 1, 
     padding: 20,
     marginTop: 20,
-    justifyContent: 'center',
-    alignContent: 'center',
+    justifyContent:'center',
+    alignContent:'center'
   },
 
   card: {
     backgroundColor: 'gray',
-    padding: 6,
+    padding: 15,
     marginBottom: 10,
     borderRadius: 8,
   },
@@ -82,10 +87,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 5,
-  },
-
-  footer: {
-    paddingVertical: 20,
-    alignItems: 'center',
   },
 });
